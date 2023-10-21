@@ -8,6 +8,10 @@ const AppStyle = StyleSheet.create({
         ...fullFlex,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    appNameHeader: {
+        fontSize: 45,
+        fontWeight: 'bold',
     }
 });
 
