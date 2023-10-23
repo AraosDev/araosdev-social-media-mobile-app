@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import AppForm from '../../../../common/components/AppForm';
 import colors from '../../../../common/styles/colors';
@@ -8,12 +8,18 @@ import { Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ScrollView } from 'react-native';
 import { changeUserDetails } from '../../../../store/slices/loginSlice';
+import IconButton from '../../../../common/components/IconButton';
 
-function General() {
+function General({ navigation }) {
     const { appBgGradient1, appBgGradient2, appBgGradient3 } = colors;
     const dispatch = useDispatch();
-    const { photo, userName, email, phoneNumber } = useSelector((state) => state.loginReducer.userDetails)
+    const { photo, userName, email, phoneNumber } = useSelector((state) => state.loginReducer.userDetails);
 
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: ({ tintColor }) => <IconButton icon='save' color={tintColor} style={{ paddingRight: 10 }} />
+        })
+    }, [navigation]);
     function userDetailsChangeHandler(identifier, text) {
         dispatch(changeUserDetails({ [identifier]: text }));
     }

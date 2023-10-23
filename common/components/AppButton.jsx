@@ -1,8 +1,9 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import React from 'react'
 import colors from '../styles/colors';
+import { MaterialIcons } from '@expo/vector-icons';
 
-function AppButton({ theme = '', onPress, children, innerWrapperStyle = {}, outerWrapperStyle = {} }) {
+function AppButton({ theme = '', onPress, children, innerWrapperStyle = {}, outerWrapperStyle = {}, icon }) {
     return (
         <Pressable
             style={({ pressed }) => [
@@ -18,6 +19,7 @@ function AppButton({ theme = '', onPress, children, innerWrapperStyle = {}, oute
                     innerWrapperStyle
                 ]}
             >
+                {icon && <MaterialIcons style={styles.iconStyle} name={icon} size={24} color="white" />}
                 <Text style={styles.btnLabelStyle}>{children}</Text>
             </View>
         </Pressable>
@@ -35,6 +37,10 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
+        flexDirection: 'row'
+    },
+    iconStyle: {
+        marginRight: 15,
     },
     transparentBg: {
         borderRadius: 4,

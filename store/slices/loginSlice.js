@@ -22,9 +22,15 @@ const loginReducer = createSlice({
                     ...action.payload,
                 }
             }
+        },
+        logOut(state) {
+            return {
+                ...state,
+                userDetails: {},
+            }
         }
     },
 });
 
-export const { setUserDetails, changeUserDetails } = loginReducer.actions;
+export const { setUserDetails, changeUserDetails, logOut } = loginReducer.actions;
 export default loginReducer.reducer;

@@ -30,11 +30,12 @@ function Root({ isUserLoggedIn, setAppReady, setUserLoggedIn }) {
       const isUserLogged = Object.keys(userDetails).length;
       if (getUser && !isUserLogged) dispatch(setUserDetails(JSON.parse(getUser)?.user));
       if (isTokenPresent || isUserLogged) setUserLoggedIn(true);
+      else setUserLoggedIn(false);
       setAppReady(true);
     }
 
     isTokenPresent();
-  }, [userDetails]);
+  }, [userDetails, isUserLoggedIn]);
 
   return (
     <Stack.Navigator>
