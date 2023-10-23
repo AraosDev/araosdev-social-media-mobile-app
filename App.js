@@ -51,8 +51,7 @@ function Root({ isUserLoggedIn, setAppReady, setUserLoggedIn }) {
             name='dashboard'
             component={DashBoard}
             options={{
-              title: 'ADSM Home',
-              headerStyle: styles.stackHeader,
+              headerShown: false,
               headerRight: ({ tintColor }) => (
                 <Feather
                   style={styles.iconStyle}
@@ -94,10 +93,6 @@ function App() {
 export default App;
 
 const styles = StyleSheet.create({
-  stackHeader: {
-    backgroundColor: colors.appBgGradient1,
-    elevation: 4
-  },
   iconStyle: {
     paddingHorizontal: 10
   }
