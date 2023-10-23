@@ -9,9 +9,12 @@ import AppButton from '../../common/components/AppButton';
 import { useLoginMutation } from '../../store/apiSlices/loginSlice';
 import Loader from '../../common/components/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { setUserDetails } from '../../store/slices/loginSlice';
 
-function AppLogin({ navigation }) {
+function AppLogin() {
     const { appBgGradient1, appBgGradient2, appBgGradient3 } = colors;
+    const dispatch = useDispatch();
     const [loginTrigger] = useLoginMutation();
 
     const [userName, setUserName] = useState('');
@@ -24,11 +27,12 @@ function AppLogin({ navigation }) {
         loginTrigger(body)
             .unwrap()
             .then(async (response) => {
-                const { status, token } = response;
+                const { status, token, user } = response;
                 if (status === 'SUCCESS') {
-                    await AsyncStorage.setItem('token', JSON.stringify({ token }));
+                    await AsyncStorage.setItem('user', JSON.stringify({ token, user }));
                     setLoginLoading(false);
-                    navigation.navigate('timeline');
+                    dispatch(setUserDetails(user));
+                    // navigation.navigate('dashboard');
                 }
             })
             .catch((err) => {
