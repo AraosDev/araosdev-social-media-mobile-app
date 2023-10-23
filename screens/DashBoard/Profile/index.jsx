@@ -4,9 +4,11 @@ import General from './screens/General';
 import Followers from './screens/Followers';
 import Friends from './screens/Friends';
 import ChangePwd from './screens/ChangePwd';
+import Timeline from '../Timeline'
 import AppStyle from '../../../common/styles/styleSheets';
 import { StyleSheet } from 'react-native';
 import colors from '../../../common/styles/colors';
+import IconButton from '../../../common/components/IconButton';
 
 const Drawer = createDrawerNavigator();
 
@@ -23,7 +25,15 @@ function Profile() {
                 drawerInactiveTintColor: '#000'
             }}
         >
-            <Drawer.Screen name='general' component={General} options={{ title: 'General Settings' }} />
+            <Drawer.Screen
+                name='general'
+                component={General}
+                options={{
+                    title: 'General Settings',
+                    headerRight: ({ tintColor }) => <IconButton icon='save' color={tintColor} style={{ paddingRight: 10 }} />
+                }}
+            />
+            <Drawer.Screen name='posts' component={Timeline} options={{ title: 'Your Posts' }} />
             <Drawer.Screen name='followers' component={Followers} options={{ title: 'Followers' }} />
             <Drawer.Screen name='friends' component={Friends} options={{ title: 'Friends' }} />
             <Drawer.Screen name='changePwd' component={ChangePwd} options={{ title: 'Change Password' }} />

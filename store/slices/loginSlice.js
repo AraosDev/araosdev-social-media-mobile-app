@@ -14,8 +14,17 @@ const loginReducer = createSlice({
                 userDetails: action.payload
             };
         },
+        changeUserDetails(state, action) {
+            return {
+                ...state,
+                userDetails: {
+                    ...state.userDetails,
+                    ...action.payload,
+                }
+            }
+        }
     },
 });
 
-export const { setUserDetails } = loginReducer.actions;
+export const { setUserDetails, changeUserDetails } = loginReducer.actions;
 export default loginReducer.reducer;
