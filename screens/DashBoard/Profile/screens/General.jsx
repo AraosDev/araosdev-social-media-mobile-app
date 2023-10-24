@@ -1,23 +1,32 @@
 import React, { useLayoutEffect, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
-import { useMediaLibraryPermissions, PermissionStatus, launchImageLibraryAsync } from 'expo-image-picker';
+import {
+    useMediaLibraryPermissions,
+    PermissionStatus,
+    launchImageLibraryAsync,
+    useCameraPermissions,
+    launchCameraAsync,
+} from 'expo-image-picker';
 import AppForm from '../../../../common/components/AppForm';
 import colors from '../../../../common/styles/colors';
 import AppStyle from '../../../../common/styles/styleSheets';
 import { Modal, Pressable, StyleSheet, Image, ScrollView, Alert, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeUserDetails, setUserDetails } from '../../../../store/slices/loginSlice';
+import { changeUserDetails, setUserDetails } from '../../../../store/slices/authReducer';
 import IconButton from '../../../../common/components/IconButton';
-import { useUpdateAccountDataMutation } from '../../../../store/apiSlices/loginSlice';
+import { useUpdateAccountDataMutation } from '../../../../store/apiSlices/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../../common/components/Loader';
 import AppButton from '../../../../common/components/AppButton';
 
 function General({ navigation }) {
     const { appBgGradient1, appBgGradient2, appBgGradient3 } = colors;
+
     const [libPermissionStatus, requireLibPermission] = useMediaLibraryPermissions();
+    const [camPermissionStatus, requireCamPermission] = useCameraPermissions();
+
     const dispatch = useDispatch();
-    const { photo, userName, email, phoneNumber, token, id: userId } = useSelector((state) => state.loginReducer.userDetails);
+    const { photo, userName, email, phoneNumber, token, id: userId } = useSelector((state) => state.authReducer.userDetails);
 
     const [updateAccDataTrigger] = useUpdateAccountDataMutation();
 
@@ -25,11 +34,22 @@ function General({ navigation }) {
     const [isModalOpen, setModalOpen] = useState(false);
     const [currentDp, setCurrentDp] = useState(null);
 
-    async function isMediaLibraryPermissionsGranted() {
-        if (libPermissionStatus.status === PermissionStatus.UNDETERMINED) {
-            const response = await requireLibPermission();
+    async function isCamMediaPermissionGranted(permissionType) {
+        const camMediaPermissionStatus = {
+            camera: {
+                status: camPermissionStatus.status,
+                requirePermission: requireCamPermission,
+            },
+            mediaLibrary: {
+                status: libPermissionStatus.status,
+                requirePermission: requireLibPermission,
+            },
+        };
+
+        if (camMediaPermissionStatus[permissionType].status === PermissionStatus.UNDETERMINED) {
+            const response = await camMediaPermissionStatus[permissionType].requirePermission();
             return response.granted;
-        } else if (libPermissionStatus.status === PermissionStatus.GRANTED) {
+        } else if (camMediaPermissionStatus[permissionType].status === PermissionStatus.GRANTED) {
             return true;
         } else {
             return false;
@@ -37,13 +57,14 @@ function General({ navigation }) {
     }
 
     async function getImageFromLibrary() {
+        setModalOpen(false);
         try {
-            if (!(await isMediaLibraryPermissionsGranted())) {
+            if (!(await isCamMediaPermissionGranted('mediaLibrary'))) {
                 Alert.alert('Phone Storage Permission Denied', 'Please grant the phone storage permission to take image from media library');
                 return;
             }
             const response = await launchImageLibraryAsync({
-                quality: 0.5,
+                quality: 0.75,
                 allowsEditing: true,
                 aspect: [1, 1]
             });
@@ -53,7 +74,26 @@ function General({ navigation }) {
             console.log(e);
             Alert.alert('Some Error occurred while opening the Phone storage', 'Please try again');
         }
+    }
+
+    async function getImageFromCamera() {
         setModalOpen(false);
+        try {
+            if (!(await isCamMediaPermissionGranted('camera'))) {
+                Alert.alert('Camera Permission Denied', 'Please grant the camera permission to take image from camera');
+                return;
+            }
+            const response = await launchCameraAsync({
+                quality: 0.75,
+                allowsEditing: true,
+                aspect: [1, 1]
+            });
+
+            setCurrentDp(response.assets[0].uri);
+        } catch (err) {
+            console.log(e);
+            Alert.alert('Some Error occurred while opening the Camera', 'Please try again');
+        }
     }
 
     function userDetailsChangeHandler(identifier, text) {
@@ -131,7 +171,12 @@ function General({ navigation }) {
                                     <IconButton icon='close' size={30} color={colors.appTextGradient3} onPress={() => setModalOpen(false)} />
                                 </View>
                                 <View style={styles.container}>
-                                    <AppButton outerWrapperStyle={styles.photoActionBtn}>Take Image</AppButton>
+                                    <AppButton
+                                        outerWrapperStyle={styles.photoActionBtn}
+                                        onPress={getImageFromCamera}
+                                    >
+                                        Take Image
+                                    </AppButton>
                                     <AppButton
                                         outerWrapperStyle={styles.photoActionBtn}
                                         onPress={getImageFromLibrary}

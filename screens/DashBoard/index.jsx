@@ -11,7 +11,7 @@ import AppStyle from '../../common/styles/styleSheets';
 
 const Tab = createBottomTabNavigator();
 function DashBoard() {
-    const { userDetails } = useSelector((state) => state.loginReducer);
+    const { userDetails } = useSelector((state) => state.authReducer);
     const { photo } = userDetails;
     return (
         <Tab.Navigator

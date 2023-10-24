@@ -13,14 +13,14 @@ import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import colors from './common/styles/colors';
 import { Feather } from '@expo/vector-icons';
-import { setUserDetails } from './store/slices/loginSlice';
+import { setUserDetails } from './store/slices/authReducer';
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator();
 
 function Root({ isUserLoggedIn, setAppReady, setUserLoggedIn }) {
 
-  const { userDetails } = useSelector((state) => state.loginReducer);
+  const { userDetails } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {

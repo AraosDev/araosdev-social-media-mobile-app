@@ -8,7 +8,7 @@ const loginSlice = createApi({
         baseUrl,
         prepareHeaders: (headers, { getState, endpoint }) => {
             if (!nonAuthenticatedRoutes.includes(endpoint)) {
-                const { token = '' } = getState().loginReducer.userDetails;
+                const { token = '' } = getState().authReducer.userDetails;
                 if (token) headers.set('authorization', `Bearer ${token}`);
             }
             return headers;
@@ -29,9 +29,16 @@ const loginSlice = createApi({
                 body,
             }),
         }),
+        updatePassword: builder.mutation({
+            query: (body) => ({
+                url: '/updatePassword/me',
+                method: 'PATCH',
+                body,
+            }),
+        }),
     }),
 });
 
-export const { useLoginMutation, useUpdateAccountDataMutation } = loginSlice;
+export const { useLoginMutation, useUpdateAccountDataMutation, useUpdatePasswordMutation } = loginSlice;
 
 export default loginSlice;

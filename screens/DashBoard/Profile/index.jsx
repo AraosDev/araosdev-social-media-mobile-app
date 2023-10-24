@@ -11,7 +11,7 @@ import { StyleSheet, SafeAreaView, View } from 'react-native';
 import colors from '../../../common/styles/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
-import { logOut } from '../../../store/slices/loginSlice';
+import { logOut } from '../../../store/slices/authReducer';
 
 const Drawer = createDrawerNavigator();
 
