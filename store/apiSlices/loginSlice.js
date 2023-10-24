@@ -1,9 +1,19 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseUrl = process.env.EXPO_PUBLIC_AUTH_API_BASE_URL;
+const nonAuthenticatedRoutes = ['login'];
 const loginSlice = createApi({
     reducerPath: 'loginSlice',
-    baseQuery: fetchBaseQuery({ baseUrl }),
+    baseQuery: fetchBaseQuery({
+        baseUrl,
+        prepareHeaders: (headers, { getState, endpoint }) => {
+            if (!nonAuthenticatedRoutes.includes(endpoint)) {
+                const { token = '' } = getState().loginReducer.userDetails;
+                if (token) headers.set('authorization', `Bearer ${token}`);
+            }
+            return headers;
+        },
+    }),
     endpoints: (builder) => ({
         login: builder.mutation({
             query: (body) => ({
@@ -12,9 +22,16 @@ const loginSlice = createApi({
                 body,
             }),
         }),
+        updateAccountData: builder.mutation({
+            query: (body) => ({
+                url: '/updateAccount/me',
+                method: 'PATCH',
+                body,
+            }),
+        }),
     }),
 });
 
-export const { useLoginMutation } = loginSlice;
+export const { useLoginMutation, useUpdateAccountDataMutation } = loginSlice;
 
 export default loginSlice;

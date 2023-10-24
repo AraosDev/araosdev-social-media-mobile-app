@@ -28,7 +28,7 @@ function Root({ isUserLoggedIn, setAppReady, setUserLoggedIn }) {
       const getUser = await AsyncStorage.getItem('user');
       const isTokenPresent = !!getUser && JSON.parse(getUser)?.token;
       const isUserLogged = Object.keys(userDetails).length;
-      if (getUser && !isUserLogged) dispatch(setUserDetails(JSON.parse(getUser)?.user));
+      if (getUser && !isUserLogged) dispatch(setUserDetails({ ...JSON.parse(getUser) }));
       if (isTokenPresent || isUserLogged) setUserLoggedIn(true);
       else setUserLoggedIn(false);
       setAppReady(true);

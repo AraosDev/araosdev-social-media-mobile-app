@@ -29,10 +29,9 @@ function AppLogin() {
             .then(async (response) => {
                 const { status, token, user } = response;
                 if (status === 'SUCCESS') {
-                    await AsyncStorage.setItem('user', JSON.stringify({ token, user }));
+                    await AsyncStorage.setItem('user', JSON.stringify({ token, ...user }));
                     setLoginLoading(false);
-                    dispatch(setUserDetails(user));
-                    // navigation.navigate('dashboard');
+                    dispatch(setUserDetails({ ...user, token }));
                 }
             })
             .catch((err) => {
@@ -41,6 +40,7 @@ function AppLogin() {
                 setUserName('');
                 setPassword('');
                 Alert.alert('Login Failed', err.data.message);
+                setLoginLoading(false);
             });
     }
 
