@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, View } from 'react-native'
+import { Alert, ScrollView, StyleSheet, View } from 'react-native'
 import React, { useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import AppStyle from '../../common/styles/styleSheets';
@@ -6,11 +6,11 @@ import colors from '../../common/styles/colors';
 import GradientText from '../../common/components/GradientText';
 import AppForm from '../../common/components/AppForm';
 import AppButton from '../../common/components/AppButton';
-import { useLoginMutation } from '../../store/apiSlices/loginSlice';
+import { useLoginMutation } from '../../store/apiSlices/authSlice';
 import Loader from '../../common/components/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
-import { setUserDetails } from '../../store/slices/loginSlice';
+import { setUserDetails } from '../../store/slices/authReducer';
 
 function AppLogin() {
     const { appBgGradient1, appBgGradient2, appBgGradient3 } = colors;
@@ -29,10 +29,9 @@ function AppLogin() {
             .then(async (response) => {
                 const { status, token, user } = response;
                 if (status === 'SUCCESS') {
-                    await AsyncStorage.setItem('user', JSON.stringify({ token, user }));
+                    await AsyncStorage.setItem('user', JSON.stringify({ token, ...user }));
                     setLoginLoading(false);
-                    dispatch(setUserDetails(user));
-                    // navigation.navigate('dashboard');
+                    dispatch(setUserDetails({ ...user, token }));
                 }
             })
             .catch((err) => {
@@ -41,46 +40,56 @@ function AppLogin() {
                 setUserName('');
                 setPassword('');
                 Alert.alert('Login Failed', err.data.message);
+                setLoginLoading(false);
             });
     }
 
     return (
         <LinearGradient
             colors={[appBgGradient1, appBgGradient2, appBgGradient3]}
-            style={[AppStyle.fullFlex, styles.loginContainer]}
+            style={[AppStyle.fullFlex]}
         >
             {isLoginLoading ? <Loader /> : (
-                <>
-                    <View style={styles.appHeader}>
-                        <GradientText style={AppStyle.appNameHeader}>ADSM</GradientText>
-                    </View>
-                    <View style={styles.loginForm}>
-                        <AppForm
-                            inputProps={{ placeholder: 'Username/email/phone number' }}
-                            value={userName}
-                            onChangeText={setUserName}
-                        />
-                        <AppForm
-                            inputProps={{ placeholder: 'Password', secureTextEntry: true }}
-                            value={password}
-                            onChangeText={setPassword}
-                        />
-                        <View style={styles.actionBtnContainer}>
-                            <AppButton
-                                outerWrapperStyle={styles.buttonOuter}
-                                onPress={onLogin}
-                            >
-                                Login
-                            </AppButton>
-                            <AppButton
-                                theme='outline'
-                                outerWrapperStyle={styles.buttonOuter}
-                            >
-                                Create Account
-                            </AppButton>
+                <ScrollView style={[AppStyle.fullFlex]}>
+                    <View style={styles.loginContainer}>
+                        <View style={styles.appHeader}>
+                            <GradientText style={AppStyle.appNameHeader}>ADSM</GradientText>
+                        </View>
+                        <View style={styles.loginForm}>
+                            <AppForm
+                                inputProps={{
+                                    placeholder: 'Username/email/phone number',
+                                    placeholderTextColor: colors.appTextGradient3,
+                                }}
+                                value={userName}
+                                onChangeText={setUserName}
+                            />
+                            <AppForm
+                                inputProps={{
+                                    placeholder: 'Password',
+                                    secureTextEntry: true,
+                                    placeholderTextColor: colors.appTextGradient3,
+                                }}
+                                value={password}
+                                onChangeText={setPassword}
+                            />
+                            <View style={styles.actionBtnContainer}>
+                                <AppButton
+                                    outerWrapperStyle={styles.buttonOuter}
+                                    onPress={onLogin}
+                                >
+                                    Login
+                                </AppButton>
+                                <AppButton
+                                    theme='outline'
+                                    outerWrapperStyle={styles.buttonOuter}
+                                >
+                                    Create Account
+                                </AppButton>
+                            </View>
                         </View>
                     </View>
-                </>
+                </ScrollView>
             )}
         </LinearGradient>
     );

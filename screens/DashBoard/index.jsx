@@ -7,16 +7,17 @@ import { Image, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import SearchFriends from './SearchFriends';
 import Profile from './Profile';
+import AppStyle from '../../common/styles/styleSheets';
 
 const Tab = createBottomTabNavigator();
 function DashBoard() {
-    const { userDetails } = useSelector((state) => state.loginReducer);
+    const { userDetails } = useSelector((state) => state.authReducer);
     const { photo } = userDetails;
     return (
         <Tab.Navigator
             screenOptions={{
-                headerShown: false,
                 tabBarStyle: styles.tabStyle,
+                headerStyle: AppStyle.navigationHeader,
                 tabBarActiveTintColor: colors.appBgGradient1,
                 tabBarLabelStyle: {
                     fontSize: 14
@@ -27,6 +28,7 @@ function DashBoard() {
                 name='timeline'
                 component={Timeline}
                 options={{
+                    title: 'AraosDev Social Media',
                     tabBarIcon: ({ size, color }) => <Entypo name="home" size={size} color={color} />,
                     tabBarLabel: 'Timeline'
                 }}
@@ -35,6 +37,7 @@ function DashBoard() {
                 name='search'
                 component={SearchFriends}
                 options={{
+                    title: 'Search Friends',
                     tabBarIcon: ({ size, color }) => <Entypo name="magnifying-glass" size={size} color={color} />,
                     tabBarLabel: 'Search Friends'
                 }}
@@ -43,6 +46,8 @@ function DashBoard() {
                 name='profile'
                 component={Profile}
                 options={{
+                    title: 'Profile',
+                    headerShown: false,
                     tabBarIcon: ({ size, color }) => (
                         <Image
                             source={{ uri: photo }}
@@ -60,8 +65,8 @@ export default DashBoard;
 
 const styles = StyleSheet.create({
     tabStyle: {
-        backgroundColor: '#313b82',
+        backgroundColor: colors.appBgBlue1,
         padding: 10,
         height: 60
-    }
+    },
 });

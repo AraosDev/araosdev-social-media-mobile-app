@@ -5,15 +5,16 @@ import colors from '../styles/colors';
 
 function AppForm({ label = '', onChangeText, value = '', formStyle = {}, style = {}, inputProps = {} }) {
     const { container, inputStyle, labelStyle } = styles;
+    const { placeholderTextColor = colors.appBgGradient1, ...restInputProps } = inputProps;
     return (
         <View style={[container, style]}>
             {label && <Text style={[labelStyle]}>{label}</Text>}
             <TextInput
-                {...inputProps}
+                {...restInputProps}
                 value={value}
                 onChangeText={onChangeText}
                 style={[inputStyle, formStyle]}
-                placeholderTextColor={colors.appTextGradient3}
+                placeholderTextColor={placeholderTextColor}
             />
         </View>
     );

@@ -13,14 +13,14 @@ import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import colors from './common/styles/colors';
 import { Feather } from '@expo/vector-icons';
-import { setUserDetails } from './store/slices/loginSlice';
+import { setUserDetails } from './store/slices/authReducer';
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator();
 
 function Root({ isUserLoggedIn, setAppReady, setUserLoggedIn }) {
 
-  const { userDetails } = useSelector((state) => state.loginReducer);
+  const { userDetails } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,13 +28,14 @@ function Root({ isUserLoggedIn, setAppReady, setUserLoggedIn }) {
       const getUser = await AsyncStorage.getItem('user');
       const isTokenPresent = !!getUser && JSON.parse(getUser)?.token;
       const isUserLogged = Object.keys(userDetails).length;
-      if (getUser && !isUserLogged) dispatch(setUserDetails(JSON.parse(getUser)?.user));
+      if (getUser && !isUserLogged) dispatch(setUserDetails({ ...JSON.parse(getUser) }));
       if (isTokenPresent || isUserLogged) setUserLoggedIn(true);
+      else setUserLoggedIn(false);
       setAppReady(true);
     }
 
     isTokenPresent();
-  }, [userDetails]);
+  }, [userDetails, isUserLoggedIn]);
 
   return (
     <Stack.Navigator>
@@ -51,8 +52,7 @@ function Root({ isUserLoggedIn, setAppReady, setUserLoggedIn }) {
             name='dashboard'
             component={DashBoard}
             options={{
-              title: 'ADSM Home',
-              headerStyle: styles.stackHeader,
+              headerShown: false,
               headerRight: ({ tintColor }) => (
                 <Feather
                   style={styles.iconStyle}
@@ -94,10 +94,6 @@ function App() {
 export default App;
 
 const styles = StyleSheet.create({
-  stackHeader: {
-    backgroundColor: colors.appBgGradient1,
-    elevation: 4
-  },
   iconStyle: {
     paddingHorizontal: 10
   }
