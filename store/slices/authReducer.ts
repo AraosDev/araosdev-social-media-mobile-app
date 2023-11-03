@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+const initialState: AuthReducerState = {
     userDetails: {}
 };
 
@@ -8,13 +8,13 @@ const authReducer = createSlice({
     name: 'authReducer',
     initialState,
     reducers: {
-        setUserDetails(state, action) {
+        setUserDetails(state, action: PayloadAction<AuthReducerState['userDetails']>) {
             return {
                 ...state,
                 userDetails: action.payload
             };
         },
-        changeUserDetails(state, action) {
+        changeUserDetails(state, action: PayloadAction<AuthReducerState['userDetails']>) {
             return {
                 ...state,
                 userDetails: {

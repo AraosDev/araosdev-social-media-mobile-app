@@ -9,3 +9,6 @@ export const store = configureStore({
     },
     middleware: (defaultMiddleware) => defaultMiddleware().concat(authSlice.middleware),
 });
+
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;

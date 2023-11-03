@@ -11,16 +11,16 @@ import DashBoard from './screens/DashBoard';
 import { useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import colors from './common/styles/colors';
 import { Feather } from '@expo/vector-icons';
 import { setUserDetails } from './store/slices/authReducer';
+import { useAppSelector } from './store/hooks';
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator();
 
-function Root({ isUserLoggedIn, setAppReady, setUserLoggedIn }) {
+function Root({ isUserLoggedIn, setAppReady, setUserLoggedIn }): React.ReactElement {
 
-  const { userDetails } = useSelector((state) => state.authReducer);
+  const { userDetails } = useAppSelector((state) => state.authReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -69,7 +69,7 @@ function Root({ isUserLoggedIn, setAppReady, setUserLoggedIn }) {
   );
 }
 
-function App() {
+function App(): React.ReactElement {
   const [isAppReady, setAppReady] = useState(false);
   const [isUserLoggedIn, setUserLoggedIn] = useState(false);
 
