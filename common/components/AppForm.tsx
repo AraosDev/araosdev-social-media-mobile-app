@@ -2,8 +2,10 @@ import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { TextInput } from 'react-native-gesture-handler';
 import colors from '../styles/colors';
+import { AppFormProps } from '../../@types/common';
 
-function AppForm({ label = '', onChangeText, value = '', formStyle = {}, style = {}, inputProps = {} }) {
+function AppForm(props: AppFormProps): React.ReactElement {
+    const { label = '', onChangeText, value = '', formStyle = {}, style = {}, inputProps = {} } = props;
     const { container, inputStyle, labelStyle } = styles;
     const { placeholderTextColor = colors.appBgGradient1, ...restInputProps } = inputProps;
     return (
@@ -28,7 +30,7 @@ const styles = StyleSheet.create({
     },
     labelStyle: {
         fontSize: 18,
-        fontWeight: 500,
+        fontWeight: '500',
     },
     inputStyle: {
         backgroundColor: colors.appBgGradient2,

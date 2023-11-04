@@ -2,8 +2,10 @@ import { View, Text, Pressable, StyleSheet } from 'react-native'
 import React from 'react'
 import colors from '../styles/colors';
 import { MaterialIcons } from '@expo/vector-icons';
+import { AppButtonProps } from '../../@types/common';
 
-function AppButton({ theme = '', onPress, children, innerWrapperStyle = {}, outerWrapperStyle = {}, icon }) {
+function AppButton(props: AppButtonProps) {
+    const { theme = 'default', onPress, children, innerWrapperStyle = {}, outerWrapperStyle = {}, icon } = props;
     return (
         <Pressable
             style={({ pressed }) => [

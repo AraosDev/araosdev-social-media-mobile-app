@@ -2,7 +2,7 @@ import { View, ActivityIndicator, StyleSheet } from 'react-native'
 import React from 'react'
 import colors from '../styles/colors';
 
-function Loader() {
+function Loader(): React.ReactElement {
     return (
         <View style={styles.root}>
             <ActivityIndicator size={100} color={colors.appTextGradient3} />
