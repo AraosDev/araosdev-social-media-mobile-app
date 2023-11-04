@@ -4,7 +4,7 @@ import { ColorValue, GestureResponderEvent, TextProps, ViewStyle, TextInputProps
 
 type onPressForPressable = (event: GestureResponderEvent) => void;
 
-interface IconButtonProps {
+export interface IconButtonProps {
     icon: Ionicons;
     onPress: onPressForPressable;
     color?: ColorValue;
@@ -12,9 +12,9 @@ interface IconButtonProps {
     style?: ViewStyle;
 }
 
-interface GradientTextProps extends TextProps { }
+export interface GradientTextProps extends TextProps { }
 
-interface AppFormProps {
+export interface AppFormProps {
     label?: string;
     onChangeText?: TextInputProps['onChangeText'];
     value?: string;
@@ -23,11 +23,11 @@ interface AppFormProps {
     inputProps?: Omit<TextInputProps, 'onChangeText' | 'value' | 'style'>;
 }
 
-interface AppButtonProps {
+export interface AppButtonProps {
     theme?: 'outline' | 'default';
     onPress: onPressForPressable;
     children: TextProps['children'];
     innerWrapperStyle?: ViewStyle;
     outerWrapperStyle?: ViewStyle;
-    icon: MaterialIcons;
+    icon?: MaterialIcons;
 }

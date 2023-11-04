@@ -9,12 +9,12 @@ import AppButton from '../../common/components/AppButton';
 import { useLoginMutation } from '../../store/apiSlices/authSlice';
 import Loader from '../../common/components/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch } from 'react-redux';
 import { setUserDetails } from '../../store/slices/authReducer';
+import { useAppDispatch } from '../../store/hooks';
 
-function AppLogin() {
+function AppLogin(): React.ReactElement {
     const { appBgGradient1, appBgGradient2, appBgGradient3 } = colors;
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const [loginTrigger] = useLoginMutation();
 
     const [userName, setUserName] = useState('');
@@ -43,6 +43,8 @@ function AppLogin() {
                 setLoginLoading(false);
             });
     }
+
+    function onCreateAccount() { }
 
     return (
         <LinearGradient
@@ -83,6 +85,7 @@ function AppLogin() {
                                 <AppButton
                                     theme='outline'
                                     outerWrapperStyle={styles.buttonOuter}
+                                    onPress={onCreateAccount}
                                 >
                                     Create Account
                                 </AppButton>

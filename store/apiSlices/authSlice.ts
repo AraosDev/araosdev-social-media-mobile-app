@@ -30,7 +30,7 @@ const loginSlice = createApi({
                 body,
             }),
         }),
-        updatePassword: builder.mutation<UpdateAccountResponse, UpdateAccountRequest>({
+        updatePassword: builder.mutation<UpdateAccountResponse, updatePasswordRequest>({
             query: (body) => ({
                 url: '/updatePassword/me',
                 method: 'PATCH',

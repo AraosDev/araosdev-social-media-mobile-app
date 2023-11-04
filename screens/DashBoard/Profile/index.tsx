@@ -10,13 +10,13 @@ import AppButton from '../../../common/components/AppButton';
 import { StyleSheet, SafeAreaView, View } from 'react-native';
 import colors from '../../../common/styles/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch } from 'react-redux';
 import { logOut } from '../../../store/slices/authReducer';
+import { useAppDispatch } from '../../../store/hooks';
 
 const Drawer = createDrawerNavigator();
 
 function CustomDrawer(props) {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     async function onLogout() {
         await AsyncStorage.removeItem('user');
@@ -41,7 +41,7 @@ function CustomDrawer(props) {
     );
 }
 
-function Profile() {
+function Profile(): React.ReactElement {
     const { drawerLabelStyle, drawerStyle } = styles;
     return (
         <Drawer.Navigator
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.appBgGradient1
     },
     drawerLabelStyle: {
-        fontWeight: 600,
+        fontWeight: '600',
     },
     logoutBtnContainer: {
         flex: 1,

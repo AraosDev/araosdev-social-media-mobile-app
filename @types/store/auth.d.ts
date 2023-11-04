@@ -33,6 +33,12 @@ interface updatePasswordRequest {
     confirmNewPassword: string;
 }
 
+interface UpdatePasswordResponse {
+    status: API_RES.API_SUCCESS;
+    message: API_RES.UPDATE_API_PWD_SUCCESS;
+    token: newToken;
+}
+
 
 // CommonErrorResponse
 interface APIErrorResponse {
@@ -42,5 +48,5 @@ interface APIErrorResponse {
 
 // Auth Reducer
 interface AuthReducerState {
-    userDetails: Partial<Omit<LoginSuccessResponse, 'status'>>;
+    userDetails: Partial<UserDetails & { token: string }>;
 }

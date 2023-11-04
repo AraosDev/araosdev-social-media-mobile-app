@@ -11,22 +11,22 @@ import AppForm from '../../../../common/components/AppForm';
 import colors from '../../../../common/styles/colors';
 import AppStyle from '../../../../common/styles/styleSheets';
 import { Modal, Pressable, StyleSheet, Image, ScrollView, Alert, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { changeUserDetails, setUserDetails } from '../../../../store/slices/authReducer';
 import IconButton from '../../../../common/components/IconButton';
 import { useUpdateAccountDataMutation } from '../../../../store/apiSlices/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../../common/components/Loader';
 import AppButton from '../../../../common/components/AppButton';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 
-function General({ navigation }) {
+function General({ navigation }): React.ReactElement {
     const { appBgGradient1, appBgGradient2, appBgGradient3 } = colors;
 
     const [libPermissionStatus, requireLibPermission] = useMediaLibraryPermissions();
     const [camPermissionStatus, requireCamPermission] = useCameraPermissions();
 
-    const dispatch = useDispatch();
-    const { photo, userName, email, phoneNumber, token, id: userId } = useSelector((state) => state.authReducer.userDetails);
+    const dispatch = useAppDispatch();
+    const { photo, userName, email, phoneNumber, token, id: userId } = useAppSelector((state) => state.authReducer.userDetails);
 
     const [updateAccDataTrigger] = useUpdateAccountDataMutation();
 
@@ -91,7 +91,7 @@ function General({ navigation }) {
 
             setCurrentDp(response.assets[0].uri);
         } catch (err) {
-            console.log(e);
+            console.log(err);
             Alert.alert('Some Error occurred while opening the Camera', 'Please try again');
         }
     }
@@ -108,7 +108,7 @@ function General({ navigation }) {
         formData.append('phoneNumber', phoneNumber);
         if (typeof currentDp === 'string') {
             const fileType = currentDp.split('.').pop();
-            const file = { uri: currentDp, name: `${userId}-${Date.now()}.${fileType}`, type: `image/${fileType}` }
+            const file: unknown = { uri: currentDp, name: `${userId}-${Date.now()}.${fileType}`, type: `image/${fileType}` }
             formData.append('photo', file);
         }
         updateAccDataTrigger(formData)

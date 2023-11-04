@@ -11,7 +11,7 @@ const authReducer = createSlice({
         setUserDetails(state, action: PayloadAction<AuthReducerState['userDetails']>) {
             return {
                 ...state,
-                userDetails: action.payload
+                userDetails: action.payload,
             };
         },
         changeUserDetails(state, action: PayloadAction<AuthReducerState['userDetails']>) {

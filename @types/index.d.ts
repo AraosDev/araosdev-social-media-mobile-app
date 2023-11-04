@@ -7,7 +7,7 @@ interface User {
     photo: string,
 }
 
-export enum API_RES {
+enum API_RES {
     API_SUCCESS = 'SUCCESS',
     UPDATE_API_PWD_SUCCESS = 'Password updated successfully.'
 }

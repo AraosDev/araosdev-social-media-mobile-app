@@ -4,14 +4,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Timeline from './Timeline';
 import { Entypo } from '@expo/vector-icons';
 import { Image, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
 import SearchFriends from './SearchFriends';
 import Profile from './Profile';
 import AppStyle from '../../common/styles/styleSheets';
+import { useAppSelector } from '../../store/hooks';
 
 const Tab = createBottomTabNavigator();
-function DashBoard() {
-    const { userDetails } = useSelector((state) => state.authReducer);
+function DashBoard(): React.ReactElement {
+    const { userDetails } = useAppSelector((state) => state.authReducer);
     const { photo } = userDetails;
     return (
         <Tab.Navigator

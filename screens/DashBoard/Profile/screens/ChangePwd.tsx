@@ -6,18 +6,18 @@ import AppStyle from '../../../../common/styles/styleSheets';
 import AppForm from '../../../../common/components/AppForm';
 import IconButton from '../../../../common/components/IconButton';
 import { useUpdatePasswordMutation } from '../../../../store/apiSlices/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { changeUserDetails } from '../../../../store/slices/authReducer';
 import Loader from '../../../../common/components/Loader';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 
 function ChangePwd({ navigation }) {
     const { appBgGradient1, appBgGradient2, appBgGradient3 } = colors;
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const [updatePwdTrigger] = useUpdatePasswordMutation();
 
-    const { userDetails } = useSelector((state) => state.authReducer);
+    const { userDetails } = useAppSelector((state) => state.authReducer);
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
