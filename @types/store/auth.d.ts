@@ -18,12 +18,13 @@ interface LoginSuccessResponse {
 }
 
 // Update Account Mutation
-interface UpdateAccountRequest extends Omit<User, 'id' | 'accountType'> { }
+interface UpdateAccountRequest extends Omit<User, 'id' | 'accountType' | 'photo'> {
+    photo: Blob;
+}
 
 interface UpdateAccountResponse {
     status: API_RES.API_SUCCESS,
-    message: API_RES.UPDATE_API_PWD_SUCCESS,
-    token: newToken,
+    user: User
 }
 
 // Update Password Mutation

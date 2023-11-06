@@ -108,10 +108,10 @@ function General({ navigation }): React.ReactElement {
         formData.append('phoneNumber', phoneNumber);
         if (typeof currentDp === 'string') {
             const fileType = currentDp.split('.').pop();
-            const file: unknown = { uri: currentDp, name: `${userId}-${Date.now()}.${fileType}`, type: `image/${fileType}` }
-            formData.append('photo', file);
+            const file = { uri: currentDp, name: `${userId}-${Date.now()}.${fileType}`, type: `image/${fileType}` }
+            formData.append('photo', file as unknown as Blob);
         }
-        updateAccDataTrigger(formData)
+        updateAccDataTrigger(formData as unknown as UpdateAccountRequest)
             .unwrap()
             .then(async (response) => {
                 const { user, status } = response;
